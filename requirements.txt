@@ -1,0 +1,35 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# Juniper AI Alert System - Python Dependencies
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Core web framework
+flask==3.0.0
+gunicorn==21.2.0
+
+# Configuration
+python-dotenv==1.0.0
+
+# HTTP requests
+requests==2.31.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AI Providers (install only what you need)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Claude AI (optional - only if using PROVIDER_AI=claude)
+# anthropic==0.18.0
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Messaging Providers (install only what you need)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Twilio WhatsApp (optional - only if using PROVIDER_MESSAGING=twilio)
+# twilio==8.11.0
+
+# Note: Telegram uses requests library (already included above)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Development & Testing
+# ─────────────────────────────────────────────────────────────────────────────
+# pytest==7.4.3
+# pytest-cov==4.1.0
