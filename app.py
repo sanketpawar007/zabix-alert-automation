@@ -18,6 +18,8 @@ from providers.ai.ollama import OllamaProvider
 from providers.ai.claude import ClaudeProvider
 from providers.messaging.telegram import TelegramProvider
 from providers.messaging.twilio_whatsapp import TwilioWhatsAppProvider
+from providers.messaging.teams import TeamsProvider
+from providers.messaging.email import EmailProvider
 from providers.monitoring.zabbix import ZabbixProvider
 from providers.monitoring.simulator import SimulatorProvider
 
@@ -74,6 +76,10 @@ def init_messaging_provider():
         return TelegramProvider(config)
     elif provider_name == 'twilio':
         return TwilioWhatsAppProvider(config)
+    elif provider_name == 'teams':
+        return TeamsProvider(config)
+    elif provider_name == 'email':
+        return EmailProvider(config)
     else:
         raise ValueError(f"Unknown messaging provider: {provider_name}")
 

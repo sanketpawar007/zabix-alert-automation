@@ -73,6 +73,20 @@ class Settings:
         self.log_level = os.getenv('LOG_LEVEL', 'INFO')
         self.log_file = os.getenv('LOG_FILE', 'logs/alert-service.log')
 
+        # ===== TEAMS SETTINGS =====
+        self.teams_webhook_url = os.getenv('TEAMS_WEBHOOK_URL', '')
+        self.teams_timeout = int(os.getenv('TEAMS_TIMEOUT', '10'))
+
+        # ===== EMAIL SETTINGS =====
+        self.smtp_server = os.getenv('SMTP_SERVER', '')
+        self.smtp_port = os.getenv('SMTP_PORT', '587')
+        self.smtp_username = os.getenv('SMTP_USERNAME', '')
+        self.smtp_password = os.getenv('SMTP_PASSWORD', '')
+        self.smtp_use_tls = os.getenv('SMTP_USE_TLS', 'True')
+        self.smtp_use_ssl = os.getenv('SMTP_USE_SSL', 'False')
+        self.smtp_from_email = os.getenv('SMTP_FROM_EMAIL', 'juniper-alerts@localhost')
+        self.alert_recipients = os.getenv('ALERT_RECIPIENTS', '')
+
         # ===== SIMULATOR SETTINGS =====
         self.simulator_require_auth = os.getenv('SIMULATOR_REQUIRE_AUTH', 'False').lower() == 'true'
 
@@ -110,6 +124,22 @@ class Settings:
                 'twilio_auth_token': self.twilio_auth_token,
                 'twilio_whatsapp_from': self.twilio_whatsapp_from,
                 'whatsapp_recipients': self.whatsapp_recipients
+            }
+        elif self.messaging_provider == 'teams':
+            return {
+                'teams_webhook_url': self.teams_webhook_url,
+                'teams_timeout': self.teams_timeout
+            }
+        elif self.messaging_provider == 'email':
+            return {
+                'smtp_server': self.smtp_server,
+                'smtp_port': self.smtp_port,
+                'smtp_username': self.smtp_username,
+                'smtp_password': self.smtp_password,
+                'smtp_use_tls': self.smtp_use_tls,
+                'smtp_use_ssl': self.smtp_use_ssl,
+                'smtp_from_email': self.smtp_from_email,
+                'alert_recipients': self.alert_recipients
             }
         else:
             raise ValueError(f"Unknown messaging provider: {self.messaging_provider}")
@@ -156,6 +186,14 @@ class Settings:
                 errors.append("TWILIO_ACCOUNT_SID is required when using Twilio")
             if not self.twilio_auth_token:
                 errors.append("TWILIO_AUTH_TOKEN is required when using Twilio")
+        elif self.messaging_provider == 'teams':
+            if not self.teams_webhook_url:
+                errors.append("TEAMS_WEBHOOK_URL is required when using Teams")
+        elif self.messaging_provider == 'email':
+            if not self.smtp_server:
+                errors.append("SMTP_SERVER is required when using Email")
+            if not self.alert_recipients:
+                errors.append("ALERT_RECIPIENTS is required when using Email")
 
         if errors:
             raise ValueError("Configuration validation failed:\n" + "\n".join(f"  - {e}" for e in errors))
